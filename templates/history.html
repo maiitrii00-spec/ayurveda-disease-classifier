@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Consultation History{% endblock %}
+{% block content %}
+<h2>Patient Consultation History</h2>
+
+{% if records %}
+<table class="data-table">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Patient</th>
+      <th>Symptoms Entered</th>
+      <th>Matched Disease</th>
+      <th>Date/Time</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for r in records %}
+    <tr>
+      <td>{{ r.id }}</td>
+      <td>{{ r.patient_name }}</td>
+      <td>{{ r.symptoms_entered }}</td>
+      <td>{{ r.matched_disease or "No match" }}</td>
+      <td>{{ r.searched_at }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+  <p>No consultations recorded yet.</p>
+{% endif %}
+{% endblock %}

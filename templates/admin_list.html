@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Admin - Manage Diseases{% endblock %}
+{% block content %}
+<div class="admin-header">
+  <h2>Manage Disease Database</h2>
+  <a href="{{ url_for('admin_add') }}" class="btn-primary">+ Add New Disease</a>
+</div>
+
+<table class="data-table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Dosha</th>
+      <th>Symptoms</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for d in diseases %}
+    <tr>
+      <td>{{ d.name }}</td>
+      <td>{{ d.dosha }}</td>
+      <td>{{ d.symptoms }}</td>
+      <td class="actions">
+        <a href="{{ url_for('admin_edit', disease_id=d.id) }}" class="btn-small">Edit</a>
+        <form action="{{ url_for('admin_delete', disease_id=d.id) }}" method="POST"
+              onsubmit="return confirm('Delete this disease record?');" style="display:inline;">
+          <button type="submit" class="btn-small btn-danger">Delete</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

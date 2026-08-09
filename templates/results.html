@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}Search Results{% endblock %}
+{% block content %}
+
+<div class="card">
+  <p><strong>Patient:</strong> {{ patient_name }}</p>
+  <p><strong>Symptoms entered:</strong> {{ symptom_text }}</p>
+</div>
+
+{% if matches %}
+  <h2>{{ matches|length }} Matching Disease(s) Found</h2>
+
+  {% for d in matches %}
+  <div class="card disease-card">
+    <div class="disease-header">
+      <h3>{{ d.name }} <span class="sanskrit">({{ d.sanskrit_name }})</span></h3>
+      <span class="score-badge">{{ d.match_score }}% match</span>
+    </div>
+
+    <p><span class="tag dosha-tag">Dosha Imbalance: {{ d.dosha }}</span></p>
+
+    <div class="grid">
+      <div>
+        <h4>Symptoms</h4>
+        <p>{{ d.symptoms.replace(',', ', ') }}</p>
+      </div>
+      <div>
+        <h4>Causes</h4>
+        <p>{{ d.causes }}</p>
+      </div>
+      <div>
+        <h4>Recommended Herbs</h4>
+        <p>{{ d.herbs.replace(',', ', ') }}</p>
+      </div>
+      <div>
+        <h4>Treatment</h4>
+        <p>{{ d.treatment }}</p>
+      </div>
+      <div>
+        <h4>Diet Recommendation</h4>
+        <p>{{ d.diet_recommendation }}</p>
+      </div>
+      <div>
+        <h4>Lifestyle Recommendation</h4>
+        <p>{{ d.lifestyle_recommendation }}</p>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+
+  <p class="disclaimer">Note: This tool provides general Ayurvedic information for educational purposes
+     and is not a substitute for consultation with a qualified Ayurvedic practitioner.</p>
+
+{% else %}
+  <div class="card no-match">
+    <h2>No Matching Disease Found</h2>
+    <p>We couldn't find a disease in our database matching the symptoms you entered.
+       Please try rephrasing your symptoms, or consult an Ayurvedic practitioner directly.</p>
+  </div>
+{% endif %}
+
+<a href="{{ url_for('index') }}" class="btn-secondary">&larr; New Search</a>
+{% endblock %}

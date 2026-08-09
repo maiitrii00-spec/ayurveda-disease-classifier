@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Edit' if disease else 'Add' }} Disease{% endblock %}
+{% block content %}
+<h2>{{ 'Edit' if disease else 'Add New' }} Disease Record</h2>
+
+<div class="card form-card">
+  <form method="POST">
+    <label>Disease Name *</label>
+    <input type="text" name="name" required value="{{ disease.name if disease else '' }}">
+
+    <label>Sanskrit Name</label>
+    <input type="text" name="sanskrit_name" value="{{ disease.sanskrit_name if disease else '' }}">
+
+    <label>Dosha Imbalance *</label>
+    <input type="text" name="dosha" required placeholder="e.g. Vata / Pitta / Kapha"
+           value="{{ disease.dosha if disease else '' }}">
+
+    <label>Symptoms (comma separated) *</label>
+    <textarea name="symptoms" rows="2" required>{{ disease.symptoms if disease else '' }}</textarea>
+
+    <label>Causes</label>
+    <textarea name="causes" rows="2">{{ disease.causes if disease else '' }}</textarea>
+
+    <label>Herbs (comma separated)</label>
+    <textarea name="herbs" rows="2">{{ disease.herbs if disease else '' }}</textarea>
+
+    <label>Treatment</label>
+    <textarea name="treatment" rows="3">{{ disease.treatment if disease else '' }}</textarea>
+
+    <label>Diet Recommendation</label>
+    <textarea name="diet_recommendation" rows="2">{{ disease.diet_recommendation if disease else '' }}</textarea>
+
+    <label>Lifestyle Recommendation</label>
+    <textarea name="lifestyle_recommendation" rows="2">{{ disease.lifestyle_recommendation if disease else '' }}</textarea>
+
+    <button type="submit" class="btn-primary">{{ 'Update' if disease else 'Save' }} Disease</button>
+    <a href="{{ url_for('admin_list') }}" class="btn-secondary">Cancel</a>
+  </form>
+</div>
+{% endblock %}
