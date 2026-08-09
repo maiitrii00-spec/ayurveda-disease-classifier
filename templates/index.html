@@ -1,34 +1,772 @@
 {% extends "base.html" %}
-{% block title %}Home - Ayurveda Disease Classification System{% endblock %}
+
+{% block title %}Ayurveda Wellness | Disease Classification{% endblock %}
+
 {% block content %}
-<div class="hero">
-  <h1>Find Ayurvedic Guidance Based on Your Symptoms</h1>
-  <p>Enter your symptoms below (separated by commas) and the system will search its Ayurvedic
-     knowledge base for matching diseases, dosha imbalance, herbs, and recommended treatment.</p>
+
+<style>
+    :root {
+        --forest: #193c2a;
+        --deep-green: #28553c;
+        --sage: #6f8f72;
+        --cream: #f8f6ef;
+        --gold: #c49a52;
+        --white: #ffffff;
+        --text: #29342d;
+        --muted: #707870;
+        --border: #e5e0d4;
+    }
+
+    * {
+        box-sizing: border-box;
+    }
+
+    .home-page {
+        min-height: 80vh;
+        background:
+            radial-gradient(
+                circle at 85% 10%,
+                rgba(196, 154, 82, 0.10),
+                transparent 28%
+            ),
+            radial-gradient(
+                circle at 10% 90%,
+                rgba(111, 143, 114, 0.10),
+                transparent 28%
+            ),
+            linear-gradient(
+                135deg,
+                #f8f6ef 0%,
+                #eef4ed 100%
+            );
+
+        padding: 60px 20px 80px;
+    }
+
+    .home-container {
+        max-width: 1100px;
+        margin: 0 auto;
+    }
+
+    /* =========================
+       HERO
+    ========================= */
+
+    .hero-section {
+        text-align: center;
+        max-width: 850px;
+        margin: 0 auto 48px;
+    }
+
+    .hero-label {
+        display: inline-block;
+
+        color: var(--gold);
+
+        font-size: 12px;
+        font-weight: 700;
+
+        letter-spacing: 3px;
+        text-transform: uppercase;
+
+        margin-bottom: 16px;
+    }
+
+    .hero-section h1 {
+        margin: 0;
+
+        color: var(--forest);
+
+        font-family: Georgia, "Times New Roman", serif;
+
+        font-size: clamp(38px, 6vw, 62px);
+
+        line-height: 1.1;
+
+        font-weight: 600;
+
+        letter-spacing: -1px;
+    }
+
+    .hero-divider {
+        width: 65px;
+        height: 3px;
+
+        background: var(--gold);
+
+        border-radius: 10px;
+
+        margin: 23px auto;
+    }
+
+    .hero-section p {
+        max-width: 720px;
+
+        margin: 0 auto;
+
+        color: var(--muted);
+
+        font-size: 16px;
+
+        line-height: 1.85;
+    }
+
+
+    /* =========================
+       SEARCH CARD
+    ========================= */
+
+    .search-card {
+        max-width: 830px;
+
+        margin: 0 auto 65px;
+
+        padding: 42px;
+
+        background: rgba(255, 255, 255, 0.96);
+
+        border: 1px solid var(--border);
+
+        border-radius: 22px;
+
+        box-shadow:
+            0 20px 55px rgba(30, 55, 40, 0.10);
+    }
+
+    .search-heading {
+        text-align: center;
+
+        margin-bottom: 32px;
+    }
+
+    .search-heading h2 {
+        margin: 0 0 8px;
+
+        color: var(--forest);
+
+        font-family: Georgia, "Times New Roman", serif;
+
+        font-size: 29px;
+
+        font-weight: 600;
+    }
+
+    .search-heading p {
+        margin: 0;
+
+        color: var(--muted);
+
+        font-size: 14px;
+    }
+
+
+    /* =========================
+       FORM
+    ========================= */
+
+    .form-group {
+        margin-bottom: 23px;
+    }
+
+    .form-group label {
+        display: block;
+
+        margin-bottom: 9px;
+
+        color: #294b36;
+
+        font-size: 14px;
+
+        font-weight: 700;
+    }
+
+    .optional {
+        color: #999;
+
+        font-size: 12px;
+
+        font-weight: 400;
+    }
+
+    .required {
+        color: #b35c4e;
+
+        font-weight: 700;
+    }
+
+    .form-group input,
+    .form-group textarea {
+        width: 100%;
+
+        border: 1px solid #ddd8ca;
+
+        background: #fcfbf8;
+
+        color: var(--text);
+
+        border-radius: 11px;
+
+        padding: 14px 16px;
+
+        font-family: inherit;
+
+        font-size: 15px;
+
+        transition:
+            border-color 0.2s ease,
+            box-shadow 0.2s ease,
+            background 0.2s ease;
+    }
+
+    .form-group input {
+        height: 52px;
+    }
+
+    .form-group textarea {
+        min-height: 140px;
+
+        resize: vertical;
+
+        line-height: 1.65;
+    }
+
+    .form-group input::placeholder,
+    .form-group textarea::placeholder {
+        color: #aaa9a1;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+        outline: none;
+
+        border-color: var(--sage);
+
+        background: #ffffff;
+
+        box-shadow:
+            0 0 0 4px rgba(111, 143, 114, 0.10);
+    }
+
+    .hint {
+        margin-top: 8px;
+
+        color: #929790;
+
+        font-size: 12px;
+    }
+
+
+    /* =========================
+       SEARCH BUTTON
+    ========================= */
+
+    .search-btn {
+        width: 100%;
+
+        border: none;
+
+        border-radius: 11px;
+
+        padding: 16px 25px;
+
+        background: var(--forest);
+
+        color: #ffffff;
+
+        font-family: inherit;
+
+        font-size: 15px;
+
+        font-weight: 700;
+
+        letter-spacing: 0.3px;
+
+        cursor: pointer;
+
+        box-shadow:
+            0 8px 20px rgba(25, 60, 42, 0.18);
+
+        transition:
+            background 0.25s ease,
+            transform 0.25s ease,
+            box-shadow 0.25s ease;
+    }
+
+    .search-btn:hover {
+        background: var(--deep-green);
+
+        transform: translateY(-2px);
+
+        box-shadow:
+            0 13px 28px rgba(25, 60, 42, 0.22);
+    }
+
+    .search-btn:active {
+        transform: translateY(0);
+    }
+
+
+    /* =========================
+       HOW IT WORKS
+    ========================= */
+
+    .how-section {
+        margin-top: 10px;
+    }
+
+    .section-heading {
+        text-align: center;
+
+        margin-bottom: 30px;
+    }
+
+    .section-heading h2 {
+        margin: 0 0 8px;
+
+        color: var(--forest);
+
+        font-family: Georgia, "Times New Roman", serif;
+
+        font-size: 30px;
+
+        font-weight: 600;
+    }
+
+    .section-heading p {
+        margin: 0;
+
+        color: var(--muted);
+
+        font-size: 14px;
+    }
+
+
+    /* =========================
+       STEP CARDS
+    ========================= */
+
+    .steps {
+        display: grid;
+
+        grid-template-columns: repeat(3, 1fr);
+
+        gap: 20px;
+    }
+
+    .step {
+        background: rgba(255, 255, 255, 0.90);
+
+        border: 1px solid var(--border);
+
+        border-radius: 17px;
+
+        padding: 27px;
+
+        transition:
+            transform 0.25s ease,
+            box-shadow 0.25s ease,
+            background 0.25s ease;
+    }
+
+    .step:hover {
+        transform: translateY(-5px);
+
+        background: #ffffff;
+
+        box-shadow:
+            0 14px 32px rgba(30, 55, 40, 0.09);
+    }
+
+    .step-number {
+        width: 42px;
+        height: 42px;
+
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 50%;
+
+        background: #f0eadb;
+
+        color: var(--forest);
+
+        font-family: Georgia, "Times New Roman", serif;
+
+        font-size: 14px;
+
+        font-weight: 700;
+
+        margin-bottom: 17px;
+    }
+
+    .step h3 {
+        margin: 0 0 8px;
+
+        color: var(--forest);
+
+        font-family: Georgia, "Times New Roman", serif;
+
+        font-size: 20px;
+    }
+
+    .step p {
+        margin: 0;
+
+        color: var(--muted);
+
+        font-size: 14px;
+
+        line-height: 1.7;
+    }
+
+
+    /* =========================
+       BOTTOM MESSAGE
+    ========================= */
+
+    .bottom-message {
+        max-width: 720px;
+
+        margin: 60px auto 0;
+
+        padding-top: 32px;
+
+        border-top: 1px solid #ddd8ca;
+
+        text-align: center;
+    }
+
+    .bottom-message p {
+        margin: 0;
+
+        color: #294b36;
+
+        font-family: Georgia, "Times New Roman", serif;
+
+        font-size: 18px;
+
+        font-style: italic;
+
+        line-height: 1.7;
+    }
+
+    .bottom-message span {
+        display: block;
+
+        margin-top: 11px;
+
+        color: var(--gold);
+
+        font-size: 11px;
+
+        font-weight: 700;
+
+        letter-spacing: 2px;
+
+        text-transform: uppercase;
+    }
+
+
+    /* =========================
+       MOBILE
+    ========================= */
+
+    @media (max-width: 760px) {
+
+        .home-page {
+            padding: 40px 15px 55px;
+        }
+
+        .hero-section {
+            margin-bottom: 35px;
+        }
+
+        .hero-section h1 {
+            font-size: 38px;
+
+            letter-spacing: -0.5px;
+        }
+
+        .hero-section p {
+            font-size: 14px;
+        }
+
+        .search-card {
+            padding: 27px 20px;
+
+            border-radius: 17px;
+        }
+
+        .search-heading h2 {
+            font-size: 25px;
+        }
+
+        .steps {
+            grid-template-columns: 1fr;
+        }
+
+        .step {
+            padding: 23px;
+        }
+
+        .bottom-message {
+            margin-top: 45px;
+        }
+    }
+
+
+    @media (max-width: 430px) {
+
+        .hero-section h1 {
+            font-size: 33px;
+        }
+
+        .hero-label {
+            font-size: 10px;
+
+            letter-spacing: 2px;
+        }
+
+        .search-card {
+            padding: 23px 17px;
+        }
+    }
+</style>
+
+
+<div class="home-page">
+
+    <div class="home-container">
+
+
+        <!-- =====================================
+             HERO SECTION
+        ====================================== -->
+
+        <section class="hero-section">
+
+            <div class="hero-label">
+                Traditional Wisdom • Modern Access
+            </div>
+
+            <h1>
+                Ayurvedic Guidance,
+                Rooted in Tradition
+            </h1>
+
+            <div class="hero-divider"></div>
+
+            <p>
+                Explore traditional Ayurvedic knowledge based on your symptoms.
+                Discover possible conditions, dosha patterns, herbs and traditional
+                wellness approaches from our knowledge base.
+            </p>
+
+        </section>
+
+
+        <!-- =====================================
+             SEARCH FORM
+        ====================================== -->
+
+        <div class="search-card">
+
+            <div class="search-heading">
+
+                <h2>
+                    Begin Your Wellness Inquiry
+                </h2>
+
+                <p>
+                    Tell us what symptoms you are experiencing.
+                </p>
+
+            </div>
+
+
+            <form
+                action="{{ url_for('search') }}"
+                method="POST"
+            >
+
+
+                <!-- NAME -->
+
+                <div class="form-group">
+
+                    <label for="patient_name">
+
+                        Your Name
+
+                        <span class="optional">
+                            (optional)
+                        </span>
+
+                    </label>
+
+                    <input
+                        type="text"
+                        id="patient_name"
+                        name="patient_name"
+                        placeholder="Enter your name"
+                    >
+
+                </div>
+
+
+                <!-- SYMPTOMS -->
+
+                <div class="form-group">
+
+                    <label for="symptoms">
+
+                        Symptoms
+
+                        <span class="required">
+                            *
+                        </span>
+
+                    </label>
+
+                    <textarea
+                        id="symptoms"
+                        name="symptoms"
+                        rows="5"
+                        required
+                        placeholder="For example: headache, nausea, fatigue, sensitivity to light"
+                    ></textarea>
+
+                    <div class="hint">
+                        Separate multiple symptoms with commas.
+                    </div>
+
+                </div>
+
+
+                <!-- BUTTON -->
+
+                <button
+                    type="submit"
+                    class="search-btn"
+                >
+                    Explore Ayurvedic Guidance
+                </button>
+
+
+            </form>
+
+        </div>
+
+
+        <!-- =====================================
+             HOW IT WORKS
+        ====================================== -->
+
+        <section class="how-section">
+
+            <div class="section-heading">
+
+                <h2>
+                    How It Works
+                </h2>
+
+                <p>
+                    A simple way to explore Ayurvedic knowledge.
+                </p>
+
+            </div>
+
+
+            <div class="steps">
+
+
+                <!-- STEP 1 -->
+
+                <div class="step">
+
+                    <div class="step-number">
+                        01
+                    </div>
+
+                    <h3>
+                        Describe
+                    </h3>
+
+                    <p>
+                        Enter the symptoms you are experiencing
+                        using simple words or phrases.
+                    </p>
+
+                </div>
+
+
+                <!-- STEP 2 -->
+
+                <div class="step">
+
+                    <div class="step-number">
+                        02
+                    </div>
+
+                    <h3>
+                        Discover
+                    </h3>
+
+                    <p>
+                        The system searches the Ayurvedic disease
+                        knowledge base for relevant matches.
+                    </p>
+
+                </div>
+
+
+                <!-- STEP 3 -->
+
+                <div class="step">
+
+                    <div class="step-number">
+                        03
+                    </div>
+
+                    <h3>
+                        Learn
+                    </h3>
+
+                    <p>
+                        Review matching conditions, dosha information,
+                        herbs and traditional recommendations.
+                    </p>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================
+             BOTTOM MESSAGE
+        ====================================== -->
+
+        <div class="bottom-message">
+
+            <p>
+                Ayurveda brings together knowledge of the body,
+                mind and balance through traditional wisdom.
+            </p>
+
+            <span>
+                Ancient Wisdom • Digital Preservation
+            </span>
+
+        </div>
+
+
+    </div>
+
 </div>
 
-<div class="card form-card">
-  <form action="{{ url_for('search') }}" method="POST">
-    <label for="patient_name">Your Name (optional)</label>
-    <input type="text" id="patient_name" name="patient_name" placeholder="e.g. Rohan Sharma">
-
-    <label for="symptoms">Symptoms *</label>
-    <textarea id="symptoms" name="symptoms" rows="4" required
-      placeholder="e.g. headache, nausea, sensitivity to light"></textarea>
-
-    <button type="submit" class="btn-primary">Search Diseases</button>
-  </form>
-</div>
-
-<div class="card info-card">
-  <h3>How it works</h3>
-  <ol>
-    <li>Enter the symptoms you are experiencing.</li>
-    <li>The system validates your input.</li>
-    <li>It searches the Ayurvedic disease database for matches.</li>
-    <li>Matching diseases, dosha imbalance, herbs and treatment are displayed.</li>
-    <li>If nothing matches, you'll be notified so you can consult a practitioner directly.</li>
-  </ol>
-</div>
 {% endblock %}
-
