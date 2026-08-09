@@ -6,70 +6,101 @@
 
     <title>{% block title %}Ayurveda Disease Classification System{% endblock %}</title>
 
-    <!-- Google Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
 
-    <!-- Main stylesheet -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+    >
 </head>
 
 <body>
 
-    <!-- NAVIGATION -->
+    <!-- =========================
+         NAVIGATION
+         ========================= -->
+
     <header class="navbar">
         <div class="navbar-inner">
 
             <a href="{{ url_for('index') }}" class="brand">
+
                 <span class="brand-icon">🌿</span>
-                <span>
+
+                <span class="brand-text">
                     <strong>Ayurveda</strong>
                     <small>Disease Classification</small>
                 </span>
+
             </a>
 
+
             <nav class="main-nav">
+
                 <a href="{{ url_for('index') }}" class="nav-link">
-                    <span>⌂</span> Home
+                    <span>⌂</span>
+                    Home
                 </a>
 
                 <a href="{{ url_for('history') }}" class="nav-link">
-                    <span>◷</span> History
+                    <span>◷</span>
+                    History
                 </a>
 
-                <a href="{{ url_for('admin') }}" class="nav-link">
-                    <span>⚙</span> Admin
-                </a>
             </nav>
 
         </div>
     </header>
 
 
-    <!-- MAIN CONTENT -->
+    <!-- =========================
+         MAIN CONTENT
+         ========================= -->
+
     <main class="page-wrapper">
 
         {% with messages = get_flashed_messages(with_categories=true) %}
+
             {% if messages %}
+
                 <div class="flash-container">
+
                     {% for category, message in messages %}
+
                         <div class="flash flash-{{ category }}">
                             {{ message }}
                         </div>
+
                     {% endfor %}
+
                 </div>
+
             {% endif %}
+
         {% endwith %}
 
-        {% block content %}{% endblock %}
+
+        {% block content %}
+
+        {% endblock %}
 
     </main>
 
 
-    <!-- FOOTER -->
+    <!-- =========================
+         FOOTER
+         ========================= -->
+
     <footer class="site-footer">
+
         <div class="footer-inner">
+
             <div class="footer-brand">
                 <span>🌿</span>
                 <strong>Ayurveda Disease Classification System</strong>
@@ -82,9 +113,12 @@
             <div class="footer-line"></div>
 
             <small>
-                For educational purposes only. Consult a qualified healthcare professional for medical advice.
+                For educational purposes only. Consult a qualified healthcare
+                professional for medical advice.
             </small>
+
         </div>
+
     </footer>
 
 </body>
