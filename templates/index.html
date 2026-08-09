@@ -1,1 +1,34 @@
+{% extends "base.html" %}
+{% block title %}Home - Ayurveda Disease Classification System{% endblock %}
+{% block content %}
+<div class="hero">
+  <h1>Find Ayurvedic Guidance Based on Your Symptoms</h1>
+  <p>Enter your symptoms below (separated by commas) and the system will search its Ayurvedic
+     knowledge base for matching diseases, dosha imbalance, herbs, and recommended treatment.</p>
+</div>
+
+<div class="card form-card">
+  <form action="{{ url_for('search') }}" method="POST">
+    <label for="patient_name">Your Name (optional)</label>
+    <input type="text" id="patient_name" name="patient_name" placeholder="e.g. Rohan Sharma">
+
+    <label for="symptoms">Symptoms *</label>
+    <textarea id="symptoms" name="symptoms" rows="4" required
+      placeholder="e.g. headache, nausea, sensitivity to light"></textarea>
+
+    <button type="submit" class="btn-primary">Search Diseases</button>
+  </form>
+</div>
+
+<div class="card info-card">
+  <h3>How it works</h3>
+  <ol>
+    <li>Enter the symptoms you are experiencing.</li>
+    <li>The system validates your input.</li>
+    <li>It searches the Ayurvedic disease database for matches.</li>
+    <li>Matching diseases, dosha imbalance, herbs and treatment are displayed.</li>
+    <li>If nothing matches, you'll be notified so you can consult a practitioner directly.</li>
+  </ol>
+</div>
+{% endblock %}
 
